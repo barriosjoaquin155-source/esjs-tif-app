@@ -1,22 +1,27 @@
-importar { Terminal } desde '@es-js/terminal'
+importar { Terminal } desde "@es-js/terminal"
+importar { validarSecreto } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/validar-secreto.js";
+importar { obtenerJson } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/obtener-json.js";
+importar { calcularProximoFeriado } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/calcular-proximo-feriado.js";
 
-asincrono funcion inicio() {
-	Terminal.limpiar()
 
-	Terminal.escribir('Ingresa un valor:')
+const dni =  "45180239"
+Terminal.escribir("Ingresar tu palabra secreta:");
 
-	const resultado = esperar Terminal.leer()
+const palabraSecreta = esperar Terminal.leer();
 
-	Terminal.escribir({
-		Resultado: resultado,
-		Tipo: tipoDe resultado,
-	})
 
-	Terminal.escribir('Presiona ENTER para volver a iniciar')
+si (esperar validarSecreto(dni, palabraSecreta)) {
 
-	esperar Terminal.leerEnter()
+    const feriados = esperar obtenerJson("https://api.argentinadatos.com/v1/feriados/");
 
-	esperar inicio()
+    const proximoFeriado = calcularProximoFeriado(feriados);
+
+    Terminal.escribir("El próximo feriado es:");
+    Terminal.escribir("Fecha: " + proximoFeriado.fecha);
+    Terminal.escribir("Nombre: " + proximoFeriado.nombre);
+
+} sino {
+
+    Terminal.escribir("La palabra secreta es incorrecta.");
+
 }
-
-inicio()
